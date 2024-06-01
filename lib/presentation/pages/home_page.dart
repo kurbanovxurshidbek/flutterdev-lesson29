@@ -4,6 +4,7 @@ import '../../core/services/utils_service.dart';
 import '../../data/repositories/gemini_talk_repository_impl.dart';
 import '../../domain/usecases/gemini_text_and_image_usecase.dart';
 import '../../domain/usecases/gemini_text_only_usecase.dart';
+import '../widgets/loading_view.dart';
 
 class HomePage extends StatefulWidget {
   static const String id = 'home_page';
@@ -53,22 +54,28 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.blue,
         title: const Text("Gemini"),
       ),
-      body: Container(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Expanded(
-              child: ListView(),
+      body: Stack(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: ListView(),
+                ),
+                Container(
+                  height: 50,
+                  color: Colors.grey[300],
+                  child: TextField(),
+                ),
+              ],
             ),
-            Container(
-              height: 50,
-              color: Colors.grey[300],
-              child: TextField(),
-            ),
-          ],
-        ),
-      ),
+          ),
+
+          const LoadingView(showIndicator: true,),
+        ],
+      )
     );
   }
 }

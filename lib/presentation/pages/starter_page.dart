@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ngdemo25/core/services/log_service.dart';
 import 'package:video_player/video_player.dart';
+import '../widgets/generic_dialog.dart';
 import 'home_page.dart';
 
 class StarterPage extends StatefulWidget {
@@ -32,6 +34,20 @@ class _StarterPageState extends State<StarterPage> {
     super.dispose();
   }
 
+
+  testDialog() async{
+    bool result = await showGenericDialog(
+      context: context,
+      title: 'Attention',
+      content:"Please check your code again!",
+      optionsBuilder: () => {
+        'Cancel': false,
+        'Confirm': true,
+      },
+    );
+    LogService.i(result.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +74,8 @@ class _StarterPageState extends State<StarterPage> {
                 child: ElevatedButton(
                   // color: Colors.white,
                   onPressed: (){
-                    Navigator.pushReplacementNamed(context, HomePage.id);
+                    //Navigator.pushReplacementNamed(context, HomePage.id);
+                    testDialog();
                   },
                   child: Text('Chat with Gemini', style: TextStyle(fontSize: 18),),
                 ),
