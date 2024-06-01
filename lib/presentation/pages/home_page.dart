@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import '../../core/services/log_service.dart';
 import '../../core/services/utils_service.dart';
-import '../../data/datasources/remote/http_service.dart';
 import '../../data/repositories/gemini_talk_repository_impl.dart';
 import '../../domain/usecases/gemini_text_and_image_usecase.dart';
 import '../../domain/usecases/gemini_text_only_usecase.dart';
 
 class HomePage extends StatefulWidget {
   static const String id = 'home_page';
+
   const HomePage({super.key});
 
   @override
@@ -20,16 +20,30 @@ class _HomePageState extends State<HomePage> {
 
   apiTextOnly() async {
     var text = "What is the best way to learn Flutter development?";
-    var result = await textOnlyUseCase.call(text);
-    LogService.d(result);
+    var either = await textOnlyUseCase.call(text);
+    either.fold((l) {
+      LogService.d(l);
+    }, (r) async {
+      LogService.d(r);
+    });
   }
 
   apiTextAndImage() async {
     var text = "What is this image?";
     var base64 = await Utils.pickAndConvertImage();
 
-    var result = await textAndImageUseCase.call(text, base64);
-    LogService.d(result);
+    var either = await textAndImageUseCase.call(text, base64);
+    either.fold((l) {
+      LogService.d(l);
+    }, (r) async {
+      LogService.d(r);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    apiTextOnly();
   }
 
   @override
@@ -52,7 +66,6 @@ class _HomePageState extends State<HomePage> {
               color: Colors.grey[300],
               child: TextField(),
             ),
-
           ],
         ),
       ),

@@ -1,4 +1,6 @@
 
+import 'package:dartz/dartz.dart';
+
 import '../repositories/gemini_talk_repository.dart';
 
 class GeminiTextOnlyUseCase {
@@ -6,7 +8,7 @@ class GeminiTextOnlyUseCase {
 
   GeminiTextOnlyUseCase(this.repository);
 
-  Future<String> call(String text) async {
+  Future<Either<String, String>> call(String text) async {
     return await repository.onTextOnly(text);
   }
 
