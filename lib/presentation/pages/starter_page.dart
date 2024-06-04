@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ngdemo25/core/services/log_service.dart';
 import 'package:video_player/video_player.dart';
-import '../widgets/generic_dialog.dart';
+
 import 'home_page.dart';
 
 class StarterPage extends StatefulWidget {
@@ -18,11 +17,10 @@ class _StarterPageState extends State<StarterPage> {
   void initState() {
     super.initState();
     videoPlayerController =
-        VideoPlayerController.asset("assets/videos/gemini_video.mp4")
-          ..initialize().then((_) {
-            // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-            setState(() {});
-          });
+    VideoPlayerController.asset("assets/videos/gemini_video.mp4")
+      ..initialize().then((_) {
+        setState(() {});
+      });
 
     videoPlayerController.play();
     videoPlayerController.setLooping(true);
@@ -34,31 +32,17 @@ class _StarterPageState extends State<StarterPage> {
     super.dispose();
   }
 
-
-  testDialog() async{
-    bool result = await showGenericDialog(
-      context: context,
-      title: 'Attention',
-      content:"Please check your code again!",
-      optionsBuilder: () => {
-        'Cancel': false,
-        'Confirm': true,
-      },
-    );
-    LogService.i(result.toString());
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 40),
+          padding: const EdgeInsets.symmetric(vertical: 40),
           child: Column(
             children: [
               Container(
-                child: Image(
+                child: const Image(
                   width: 150,
                   image: AssetImage('assets/images/gemini_logo.png'),
                   fit: BoxFit.cover,
@@ -69,16 +53,36 @@ class _StarterPageState extends State<StarterPage> {
                     ? VideoPlayer(videoPlayerController)
                     : Container(),
               ),
-              Container(
-                // height: 50,
-                child: ElevatedButton(
-                  // color: Colors.white,
-                  onPressed: (){
-                    //Navigator.pushReplacementNamed(context, HomePage.id);
-                    testDialog();
-                  },
-                  child: Text('Chat with Gemini', style: TextStyle(fontSize: 18),),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacementNamed(context, HomePage.id);
+                    },
+                    child: Container(
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey, width: 2),
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Chat with Gemini ',
+                            style: TextStyle(color: Colors.grey[400], fontSize: 18),
+                          ),
+                          const Icon(
+                            Icons.arrow_forward,
+                            color: Colors.grey,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
